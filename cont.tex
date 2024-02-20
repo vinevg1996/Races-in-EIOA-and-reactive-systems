@@ -1,0 +1,96 @@
+\begin{tikzpicture}[>=stealth,node distance=2.7cm,semithick,auto, scale=0.8, every node/.style={scale=0.8}]
+				\node[state,minimum size=2cm]	(c0)	{\large{$c_0$}};
+				\node	[below of=c0]	(i0) {};
+                \node[state, left of=i0,minimum size=2cm]	(c1)
+				    {\large{\begin{tabular}{c}
+                        $c_1$ 
+                    \end{tabular}}};
+                \node[state, right of=i0,minimum size=2cm]	(c7)
+				    {\large{\begin{tabular}{c}
+                        $c_7$ 
+                    \end{tabular}}};
+                \node[state, below of=i0,minimum size=2cm]	(c4)
+				    {\large{\begin{tabular}{c}
+                        $c_4$ 
+                    \end{tabular}}};
+                \node	[left of=c4]	(i2) {};
+				\node	[right of=c4]	(i3) {};
+                \node[state, left of=i2,minimum size=2cm]	(c2)
+				    {\large{\begin{tabular}{c}
+                        $c_2$ 
+                    \end{tabular}}};
+                \node[state, below of=c2,minimum size=2cm]	(c3)
+				    {\large{\begin{tabular}{c}
+                        $c_3$ 
+                    \end{tabular}}};
+                \node[state, right of=i3,minimum size=2cm]	(c6)
+				    {\large{\begin{tabular}{c}
+                        $c_6$ 
+                    \end{tabular}}};
+                \node[state, below of=c6,minimum size=2cm]	(c8)
+				    {\large{\begin{tabular}{c}
+                        $c_8$ 
+                    \end{tabular}}};
+                \node[state, below of=c4,minimum size=2cm]	(c5)
+				    {\large{\begin{tabular}{c}
+                        $c_5$ 
+                    \end{tabular}}};
+				{\scriptsize
+				\path[->] 
+				(c0) edge [bend right, above, align=left] node {
+                        \textbf{T1}: $(?PF, id, \tau)$ \\
+                                    $cont\_table[id] = 1$ \\
+                                    $time\_table[id] = \tau$
+                        } (c1)
+                (c0) edge [bend left, above, align=left] node {
+                        \textbf{T2}: $(?GF, id)$
+                        } (c7)
+%______________________________________________
+                (c1) edge [bend right, above, align=left] node {
+                        \textbf{T3}: $(!PF_{CS}, id, \tau)$
+                        } (c2)
+%______________________________________________
+                (c2) edge [bend left, right, align=left] node {
+                        \textbf{T4}: $(?FE_{CS}, id)$
+                        } (c3)
+                (c2) edge [midway, align=left] node {
+                        \textbf{T5}: $(?PF, id, \tau)$ \\
+                                    $cont\_table[id] = 1$ \\
+                                    $time\_table[id] = \tau$
+                        } (c4)
+                (c2) edge [bend right, below, align=left] node {
+                        \textbf{T6}: $(?GF, id)$
+                        } (c5)
+%______________________________________________
+                (c3) edge [bend left, left, align=left] node {
+                        \textbf{T7}: \\ $if ((cont\_table[id] == 1) \&\& $ \\
+                        $(time\_table[id] == 0))$ \\
+                                     $(!FE, id)$ \\
+                                     $cont\_table[id] = 0$
+                        } (c2)
+%______________________________________________
+                (c4) edge [bend left, above, align=left] node {
+                        \textbf{T8}: $(!PF_{CS}, id, \tau)$
+                        } (c2)
+%______________________________________________
+                (c5) edge [bend left, above, align=left] node {
+                        \textbf{T9}: $(!GF_{CS}, id)$
+                        } (c6)
+%______________________________________________
+                (c6) edge [bend left, right, align=left] node {
+                        \textbf{T10}: $(?PF, id, \tau)$ \\
+                                    $cont\_table[id] = 1$ \\
+                                    $time\_table[id] = \tau$
+                        } (c8)
+%______________________________________________
+                (c7) edge [bend left, above, align=left] node {
+                        \textbf{T11}: $(!GF_{CS}, id)$
+                        } (c6)
+%______________________________________________
+                (c8) edge [bend left, left, align=left] node {
+                        \textbf{T12}: $(!PF_{CS}, id, \tau)$
+                        } (c6)
+					;
+				}
+\end{tikzpicture}
+\label{fig:controller}

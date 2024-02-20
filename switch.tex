@@ -1,0 +1,42 @@
+\begin{tikzpicture}[>=stealth,node distance=2.7cm,semithick,auto, scale=0.8, every node/.style={scale=0.8}]
+				\node[state,minimum size=1cm]	(s0)	{\large{$q_0$}};
+				\node	[below of=s0]	(i1) {};
+                \node[state, left of=i1,minimum size=1cm]	(s1)
+				    {\large{\begin{tabular}{c}
+                        $q_1$ 
+                    \end{tabular}}};
+                \node[state, right of=i1,minimum size=1cm]	(s2)
+				    {\large{\begin{tabular}{c}
+                        $q_2$ 
+                    \end{tabular}}};
+                
+				{\scriptsize
+				\path[->] 
+                (s0) edge [loop, left, align=right, in=900,out=1200,looseness=3] node {
+                        \textbf{TS1}: $(!FE_{CS}, id)$ \\
+                        \textbf{TS2}: $(?PF_{CS}, id, \tau)$
+                        } (s0)
+    
+				(s0) edge [bend left, below, align=left] node {
+                        \textbf{TS3}: $(?GF, id)$
+                        } (s2)
+%______________________________________________
+%______________________________________________
+%______________________________________________
+                (s1) edge [bend left, below, align=left] node {
+                        \textbf{TS4}: $(?DF, id)$
+                        } (s0)
+%______________________________________________
+%______________________________________________
+%______________________________________________
+                (s2) edge [loop, right, align=right, in=0,out=60,looseness=3] node {
+                        \textbf{TS5}: $(!FE_{CS}, id)$ \\
+                        \textbf{TS6}: $(?PF_{CS}, id, \tau)$
+                        } (s2)
+                (s2) edge [midway, above, align=left] node {
+                        \textbf{TS7}: $(!RF_{CS}, id)$
+                        } (s1)
+					;
+				}
+\end{tikzpicture}
+\label{fig:controller}
