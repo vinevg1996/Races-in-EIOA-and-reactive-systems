@@ -1,0 +1,45 @@
+#! /usr/bin/perl
+
+use REST::Client;
+use JSON;
+
+my @params = @ARGV;
+my $max_flow_rules = 10;
+
+$controller_ip = "192.168.0.148";
+$device = "of:0000000000000001";
+
+my $client = REST::Client->new();
+
+my $request_uri = "http://$controller_ip:8181/onos/v1/flows/$device?appId=666";
+#print $request_uri."\n";
+
+$client->GET($request_uri, {'Authorization' => 'Basic b25vczpyb2Nrcw==', 'Accept' => 'application/json'});
+$response1 = from_json($client->responseContent());
+$size1 = scalar @{$response1->{'flows'}};
+
+#part2
+$del_rule=-1;
+$total_size=$size1;
+#print "total_size = ".$total_size."\n";
+for(my $j=0; $j < $total_size; $j++) {
+    my $priority = $response1->{'flows'}[$j]->{'priority'};
+    if($priority != 40000) {
+        $id = $response1->{'flows'}[$j]->{'id'};
+        my $request_uri_1 = "http://$controller_ip:8181/onos/v1/flows/$device/$id";
+        $header={'Authorization' => 'Basic b25vczpyb2Nrcw==', 'Accept' => 'application/json'};
+     	$client->DELETE($request_uri_1, $header);
+	if( ($client->responseCode() eq '200') or
+            ($client->responseCode() eq '201') or
+            ($client->responseCode() eq '202') or
+            ($client->responseCode() eq '203') or
+            ($client->responseCode() eq '204')){
+            print "Delete Successfully;\n";
+        }
+        else
+        {
+            print "Error! Response Code ".$client->responseCode()."\n";
+            print "Response\n".$client->responseContent()."\n";
+     }
+    }
+}

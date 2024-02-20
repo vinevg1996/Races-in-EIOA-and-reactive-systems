@@ -1,0 +1,51 @@
+#! /usr/bin/perl
+
+use REST::Client;
+use JSON;
+
+my @params = @ARGV;
+#my $max_flow_rules = 100;
+my ($max_flow_rules) = @params;
+
+$controller_ip = "192.168.0.148	";
+$device = "of:0000000000000001";
+
+my $client = REST::Client->new();
+
+my $request_uri = "http://$controller_ip:8181/onos/v1/flows/$device?appId=666";
+#print $request_uri."\n";
+
+for(my $i=0; $i < $max_flow_rules; $i++) {
+    $content = "{
+	\"priority\": $i,
+	\"timeout\": 0,
+	\"isPermanent\": true,
+	\"deviceId\": \"$device\",
+	\"treatment\": {
+	\"instructions\": [
+	{
+	    \"type\": \"OUTPUT\",
+	    \"port\": \"1\"
+	}]
+	},
+	\"selector\": {
+	\"criteria\": [
+	{
+	\"type\": \"ETH_TYPE\",
+	\"ethType\": \"0x806\"
+	}
+	]}
+    }";
+
+    $client->POST($request_uri, $content, {'Authorization' => 'Basic b25vczpyb2Nrcw==', 'Content-Type' => 'application/json', 'Accept' => 'application/json'});
+    if( ($client->responseCode() eq '200') or
+        ($client->responseCode() eq '201')){
+        print "Added Successfully; content0_t1\n";
+    }
+    else
+    {
+        print "Error! Response Code ".$client->responseCode()."\n";
+        print "Response\n".$client->responseContent()."\n";
+    }
+
+}
