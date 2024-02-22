@@ -1,1 +1,1 @@
-# Races-in-Extended-Input-Ouput-Automata-their-compositions-and-related-reactive-systems
+# Races-in-EIOA-and-related-reactive-systems
